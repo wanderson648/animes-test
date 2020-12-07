@@ -41,6 +41,12 @@
       }
     ],
     "import/prefer-default-export": "off",
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ],
     "no-use-before-define": "off",
     "import/extensions": [
       "error",
