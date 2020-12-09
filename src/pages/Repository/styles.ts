@@ -23,7 +23,7 @@ export const Header = styled.header`
   }
 `;
 
-export const HepositoryInfo = styled.section`
+export const RepositoryInfo = styled.section`
   margin-top: 80px;
 
   header {
