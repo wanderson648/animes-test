@@ -1,22 +1,21 @@
 import styled, { css } from 'styled-components';
+
 import { shade } from 'polished';
 
 interface FormProps {
   hasError: boolean;
 }
 
-export const Title = styled.h1`
-  font-size: 42px;
-  color: #3A3A3A;
-  max-width: 450px;
-  line-height: 56px;
-
-  margin-top: 80px;
+export const Title = styled.div`
+  margin-top: 18px;
+  img {
+    width: 280px;
+  }
 `;
 
 export const Form = styled.form<FormProps>`
   margin-top: 40px;
-  max-width: 700px;
+  max-width: 800px;
 
   display: flex;
 
@@ -26,59 +25,52 @@ export const Form = styled.form<FormProps>`
     padding: 0 24px;
     border: 0;
     border-radius: 5px 0px 0px 5px;
-    color: #3A3A3A;
+    color: #3a3a3b;
     border: 2px solid #FFF;
     border-right: 0px;
 
     ${(props) => props.hasError && css`
-       border-color: #c53030;
-    ` }
+      border-color: #c53030;
+    `}
+
 
     &::placeholder {
-      color: #a8a8b3;
+      color: #808080;
+      font-size: 14px;
     }
-
   }
 
   button {
-    width: 210px;
+    width: 200px;
     height: 70px;
-    background: #04d361;
     border: 0;
     border-radius: 0px 5px 5px 0px;
+    background: #800000;
     color: #FFF;
     font-weight: 700;
-    transition: background-color 0.2s;
 
     &:hover {
-      background: ${shade(0.2, '#04d361')}
+      background: ${shade(0.2, '#800000')}
     }
   }
-`;
-
-
-export const Error = styled.span`
-  display: block;
-  color: #c53030;
-  margin-top: 8px;
 
 `;
 
-export const Repositories = styled.div`
+export const Repository = styled.div`
   margin-top: 80px;
-  max-width: 700px;
+  max-width: 800px;
 
   a {
+    width: 100%;
     background: #fff;
     border-radius: 5px;
-    width: 100%;
-    padding: 24px;
+    padding: 20px;
     display: block;
     text-decoration: none;
+    transition: transform 0.2s;
 
     display: flex;
     align-items: center;
-    transition: transform 0.2s;
 
     & + a {
       margin-top: 16px;
@@ -89,14 +81,14 @@ export const Repositories = styled.div`
     }
 
     img {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
+      width: 280px;
+      height: 280px;
+      border-radius: 5px;
     }
 
     div {
-      margin: 0  16px;
-      flex: 1;
+      margin-left: 20px;
+      text-align: justify;
 
       strong {
         font-size: 20px;
@@ -105,15 +97,25 @@ export const Repositories = styled.div`
 
       p {
         font-size: 18px;
-        color: #a8a8b3;
-        margin-top: 4px;
+        color: #696969;
+        margin-top: 8px;
       }
     }
 
-    svg {
-      margin-left: auto;
-      color: #cbcbd6;
-    }
   }
 `;
 
+export const Rodape = styled.div`
+  p {
+    margin-top: 50px;
+    text-align: center;
+    color: #696969;
+    font-weight: 700;
+  }
+`;
+
+export const Error = styled.span`
+  display: block;
+  color: #c53030;
+  margin-top: 8px;
+`;

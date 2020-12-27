@@ -1,108 +1,96 @@
-import React, { useState, FormEvent, useEffect } from 'react';
-import { FiChevronRight } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import React, { useState, FormEvent } from 'react';
 import api from '../../services/api';
 
-import logo from '../../assets/logo.svg';
+import { Title, Form, Repository, Rodape, Error } from './styles';
 
-
-import { Title, Form, Repositories, Error } from './styles';
-
+import logo from '../../assets/anime.png';
 interface Repository {
-  full_name: string;
-  description: string;
-  owner: {
-    login: string;
-    avatar_url: string;
-  }
+  mal_id: number;
+  image_url: string;
+  title: string;
+  episodes: number;
+  synopsis: string;
+  score: number;
+  type: string;
 }
 
+
 const Dashboard: React.FC = () => {
+  // const [isLoading, setIsLoading] = useState(false);
   const [newRepo, setNewRepo] = useState('');
   const [inputError, setInputError] = useState('');
+  const [repositories, setRepositories] = useState<Repository[]>([]);
 
-  const [repositories, setRepositories] = useState<Repository[]>(() => {
-    const storagedRepositories = localStorage.getItem(
-      '@GithubExplorer:repositories',
-    );
-
-    if (storagedRepositories) {
-      return JSON.parse(storagedRepositories);
-    }
-    return [];
-  });
-
-
-
-  useEffect(() => {
-    localStorage.setItem(
-      '@GithubExplorer:repositories',
-       JSON.stringify(repositories));
-  }, [repositories]);
+  // function handleSearchChange(event: FormEvent<HTMLFormElement>) {
+  //   const { value } = event.target;
+  //   setNewRepo(value.trimLeft());
+  // }
 
   async function handleAddRepository(
     event: FormEvent<HTMLFormElement>
     ): Promise<void> {
       event.preventDefault();
+      // setIsLoading(true);
+
+      const response = await api.get(`search/anime?q=${newRepo}&limit=10`);
 
       if (!newRepo) {
-        setInputError('Digite o autor/nome do repositório');
-        return;
+        setInputError('Digite o nome do anime');
       }
 
-      try {
-        const response = await api.get(`repos/${newRepo}`);
+      const repository = response.data.results;
+      console.log(repository);
 
-        const repository = response.data;
+      setRepositories(repository);
 
-        setRepositories([...repositories, repository]);
-        setNewRepo('');
-        setInputError('');
-      } catch(err) {
-        setInputError('Erro na busca por esse repositório');
-      }
+      setNewRepo('');
 
-
-    }
-
-
+      // setIsLoading(false);
+  }
 
   return (
     <>
-      <img src={logo} alt="Github logo"/>
-      <Title>Explore repositorioes no Github</Title>
+      <Title>
+        <img src={logo} alt=""/>
+      </Title>
 
-       <Form hasError={ !! inputError } onSubmit={handleAddRepository}>
-          <input
-            value={newRepo}
-            onChange={(e) => setNewRepo(e.target.value)}
-            placeholder="Digite o nome do repositório"/>
-          <button type="submit">Pesquisar</button>
-       </Form>
+      <Form hasError={ !! inputError } onSubmit={handleAddRepository}>
+        <input
+          value={newRepo}
+          onChange={(e) => setNewRepo(e.target.value)}
+          autoFocus={true}
+          placeholder="Digite o nome do anime" />
+        <button type="submit">Pesquisar</button>
+      </Form>
 
-      {inputError && <Error>{inputError}</Error>}
+      <Repository>
+        {repositories.map((repository) => (
+          <a key={repository.mal_id}
+            href={`https://nowanimes.com/?s=${repository.title.toLocaleLowerCase()}&tipo=video`}
+             target="_blank" rel="noreferrer">
+            <img src={repository.image_url} alt={repository.title} />
 
-       <Repositories>
-         {repositories.map(repository => (
-          <Link
-            key={repository.full_name}
-            to={`/repositories/${repository.full_name}`}>
-
-            <img
-              src={repository.owner.avatar_url}
-              alt={repository.owner.login}
-            />
             <div>
-              <strong>{repository.full_name}</strong>
-              <p>{repository.description}</p>
+              <strong>{repository.title}</strong>
+              <p>{repository.synopsis}</p>
+              <p>Type: {repository.type}</p>
+              <p>Ep: {repository.episodes}</p>
+              <p>Score: {repository.score}</p>
             </div>
 
-            <FiChevronRight size={20} />
-          </Link>
-         ))}
-       </Repositories>
+            {/* <FiChevronRight size={20} /> */}
+          </a>
+        ))}
+      </Repository>
+
+      <Rodape>
+          <div>
+            <p>Wanderson Oliveira &copy; 2020</p>
+          </div>
+      </Rodape>
     </>
   )
-}
+};
 
 export default Dashboard;
+
