@@ -1,10 +1,8 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { shade } from 'polished';
 
-interface FormProps {
-  hasError: boolean;
-}
+
 
 export const Title = styled.div`
   margin-top: 18px;
@@ -13,7 +11,7 @@ export const Title = styled.div`
   }
 `;
 
-export const Form = styled.form<FormProps>`
+export const Form = styled.form`
   margin-top: 40px;
   max-width: 800px;
 
@@ -26,13 +24,6 @@ export const Form = styled.form<FormProps>`
     border: 0;
     border-radius: 5px 0px 0px 5px;
     color: #3a3a3b;
-    border: 2px solid #FFF;
-    border-right: 0px;
-
-    ${(props) => props.hasError && css`
-      border-color: #c53030;
-    `}
-
 
     &::placeholder {
       color: #808080;
@@ -112,10 +103,4 @@ export const Rodape = styled.div`
     color: #696969;
     font-weight: 700;
   }
-`;
-
-export const Error = styled.span`
-  display: block;
-  color: #c53030;
-  margin-top: 8px;
 `;
