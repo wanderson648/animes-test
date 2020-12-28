@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import api from '../../services/api';
 
-import { Title, Form, Repository, Rodape, Error } from './styles';
+import { Title, Form, Repository, Rodape } from './styles';
 
 import logo from '../../assets/anime.png';
 interface Repository {
@@ -18,7 +18,6 @@ interface Repository {
 const Dashboard: React.FC = () => {
   // const [isLoading, setIsLoading] = useState(false);
   const [newRepo, setNewRepo] = useState('');
-  const [inputError, setInputError] = useState('');
   const [repositories, setRepositories] = useState<Repository[]>([]);
 
   // function handleSearchChange(event: FormEvent<HTMLFormElement>) {
@@ -33,10 +32,6 @@ const Dashboard: React.FC = () => {
       // setIsLoading(true);
 
       const response = await api.get(`search/anime?q=${newRepo}&limit=10`);
-
-      if (!newRepo) {
-        setInputError('Digite o nome do anime');
-      }
 
       const repository = response.data.results;
       console.log(repository);
@@ -54,7 +49,7 @@ const Dashboard: React.FC = () => {
         <img src={logo} alt=""/>
       </Title>
 
-      <Form hasError={ !! inputError } onSubmit={handleAddRepository}>
+      <Form onSubmit={handleAddRepository}>
         <input
           value={newRepo}
           onChange={(e) => setNewRepo(e.target.value)}
