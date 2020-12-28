@@ -102,5 +102,6 @@ export const Rodape = styled.div`
     text-align: center;
     color: #696969;
     font-weight: 700;
+    font-size: 12px;
   }
 `;
